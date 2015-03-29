@@ -15,10 +15,6 @@ public class CopyFile {
 
 	private String fileName;
 	
-	public String getTemporaryFileName(int fileNumber) {
-		return ".\\Temporary\\" + "Test_FileWriter_" + fileNumber + "_.xml";
-	}
-	
 	private String setFileName(String line) {
 		this.fileName = ".\\output\\" + line.substring(308, 315) + "_" + line.substring(280, 288) + "_" + 
 				line.substring(289, 291) + "h" + line.substring(292, 294) + "m" + line.substring(295, 297) + "s.xml";

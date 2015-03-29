@@ -18,9 +18,6 @@ public class Test {
 	public static void main(String[] args) throws ParserConfigurationException,
 			SAXException, IOException, InterruptedException {
 
-		
-		// System.out.println(dir.getAbsolutePath());
-
 		while (true) {
 			int fileNumber = 1;
 			File dir = new File(".\\Input");
