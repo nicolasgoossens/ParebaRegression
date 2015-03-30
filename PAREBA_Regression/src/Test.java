@@ -6,12 +6,14 @@ import java.util.Collections;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import objects.INGQTT;
 import objects.Pareba;
 
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import utils.Logger;
+import utils.QttReader;
 
 public class Test {
 
@@ -21,44 +23,30 @@ public class Test {
 		while (true) {
 			int fileNumber = 1;
 			File dir = new File(".\\Input");
+			QttReader qttReader = null;
 			File[] directoryListing = dir.listFiles();
 			if (directoryListing.length > 0 && directoryListing != null) {
 				Logger lg = new Logger();
 				lg.createLogging();
-				for (File child : directoryListing) {			
+				for (File child : directoryListing) {
 					int lengte = 0;
 					Pareba pareba = new Pareba(child, fileNumber);
 					lg.writeSubscriptionAndTimestamp(pareba);
 					while (lengte < pareba.getElement()
 							.getElementsByTagName("axsd:AccNbrs").getLength()) {
 
-						System.out.println(pareba.getAccount().pseudoLength(
-								pareba.getAccount().pseudo(
-										pareba.getAccount().accountNumbers(
-												pareba.getElement(), lengte))));
-
 						if (pareba.getAccount().pseudoLength(
 								pareba.getAccount().pseudo(
 										pareba.getAccount().accountNumbers(
 												pareba.getElement(), lengte))) == 12) {
-
-							System.out.println(pareba.getAccount().pseudo(
-									pareba.getAccount().accountNumbers(
-											pareba.getElement(), lengte)));
-
-							System.out.println(pareba.getAccount().bicCode(
-									pareba.getAccount().accountNumbers(
-											pareba.getElement(), lengte)));
-							System.out
-									.println(pareba
-											.getAccount()
-											.bicCode(
-													pareba.getAccount()
-															.accountNumbers(
-																	pareba.getElement(),
-																	lengte))
-											.substring(4, 6));
-
+							qttReader = new QttReader();
+							qttReader.ingQttReader(pareba
+									.getAccount()
+									.bicCode(
+											pareba.getAccount()
+													.accountNumbers(
+															pareba.getElement(),
+															lengte)));
 							Node type = pareba
 									.getAccount()
 									.type(pareba
@@ -524,7 +512,7 @@ public class Test {
 											"DIV00c", "DIV00x", "DIV00p",
 											"DIV01p", "DIVXML", "DIV00E",
 											"DIV00M", "DIV00e", "DIV00d",
-											"DIVPES", "DIVDES", };
+											"DIVPES", "DIVDES" };
 
 									qttCountry = qttSpain;
 								} else {
@@ -1076,7 +1064,7 @@ public class Test {
 											"RON21", "RON22", "RON23", "RON24",
 											"BEF00", "DIV0I0", "DIV0I1",
 											"DIV00c", "DIV00x", "DIV00p",
-											"DIV01p", "DIVXML", };
+											"DIV01p", "DIVXML" };
 
 									qttCountry = qttRomania;
 								} else {
@@ -1170,8 +1158,9 @@ public class Test {
 					child.delete();
 
 				}
-			} Thread.sleep(5000);
-		} 
+			}
+			Thread.sleep(5000);
+		}
 	}
 
 	private static String qttValidation(ArrayList<String> qttPareba,

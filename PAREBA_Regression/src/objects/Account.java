@@ -9,7 +9,7 @@ public class Account {
 	}
 
 	private String pseudo;
-	
+
 	public Node accountNumbers(Element element, int lengte) {
 		return element.getElementsByTagName("axsd:AccNbrs").item(lengte);
 	}
@@ -17,14 +17,14 @@ public class Account {
 	// Method to set the pseudo account for current IBAN account
 	public String pseudo(Node accountNumbers) {
 		return accountNumbers.getFirstChild().getNextSibling().getFirstChild()
-				.getNextSibling().getTextContent(); 
+				.getNextSibling().getTextContent();
 	}
-	
+
 	// Method to get the pseudo account for current IBAN account
 	public String getPseudo() {
 		return pseudo;
 	}
-	
+
 	// Method to get the length of the pseudo account
 	public int pseudoLength(String pseudo) {
 		return pseudo.length();
@@ -52,16 +52,13 @@ public class Account {
 
 	// Method to get the BEP13 type 'if' present'
 	public Node bep13(Node qTransType) {
-		return qTransType.getNextSibling().getNextSibling().getFirstChild()
-				.getNextSibling().getFirstChild().getNextSibling();
+		return qTransType.getNextSibling().getFirstChild().getFirstChild();
 	}
 
 	// Method to get the BEP13 Beneficiary account
 	public Node bep13BenefAccount(Node qTransType) {
-		return qTransType.getNextSibling().getNextSibling().getFirstChild()
-				.getNextSibling().getNextSibling().getNextSibling()
-				.getFirstChild().getNextSibling().getFirstChild()
-				.getNextSibling().getFirstChild().getNextSibling()
-				.getNextSibling().getNextSibling();
+		return qTransType.getNextSibling().getFirstChild().getNextSibling()
+				.getFirstChild().getFirstChild().getFirstChild()
+				.getNextSibling();
 	}
 }
