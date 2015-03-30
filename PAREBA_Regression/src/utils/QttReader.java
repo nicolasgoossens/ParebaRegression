@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import objects.BICCODE;
@@ -35,15 +36,9 @@ public class QttReader {
 				List<String> qttList = new ArrayList<String>(
 						Arrays.asList(qtts));
 
-				System.out.println(line);
-				System.out.println(Arrays.toString(qttList.toArray()));
-				System.out.println(Arrays.toString(qttPareba.toArray()));
-				System.out.println(bicCode + " ING");
-				System.out.println("------------------------");
-				
-				//Here!!!!!
-				if (qttList.contains(qttPareba)) {
-					System.out.println("ING!!!!!");
+				Collections.sort(qttList);
+				if (qttList.equals(qttPareba)) {
+					System.out.println("Gelukt!!!!!");
 
 				}
 			} else {
@@ -54,18 +49,15 @@ public class QttReader {
 				while (!line.startsWith(bicCode.substring(4, 6))) {
 					line = reader.readLine();
 				}
-				String qtts[] = line.substring(3).split(",");
-				List<String> qttList = new ArrayList<String>(
-						Arrays.asList(qtts));
+				if (line != null) {
+					String qtts[] = line.substring(3).split(",");
+					List<String> qttList = new ArrayList<String>(
+							Arrays.asList(qtts));
 
-				System.out.println(line);
-				System.out.println(Arrays.toString(qttList.toArray()));
-				System.out.println(Arrays.toString(qttPareba.toArray()));
-				System.out.println(bicCode + " NONING");
-				System.out.println("------------------------");
-
-				if (qttList.equals(qttPareba)) {
-					System.out.println("ING!!!!!");
+					Collections.sort(qttList);
+					if (qttList.equals(qttPareba)) {
+						System.out.println("ING!!!!!");
+					}
 				}
 			}
 		}

@@ -35,6 +35,9 @@ public class Test {
 					while (lengte < pareba.getElement()
 							.getElementsByTagName("axsd:AccNbrs").getLength()) {
 
+						System.out.println((pareba.getAccount().pseudo(
+										pareba.getAccount().accountNumbers(
+												pareba.getElement(), lengte))));
 						if (pareba.getAccount().pseudoLength(
 								pareba.getAccount().pseudo(
 										pareba.getAccount().accountNumbers(
