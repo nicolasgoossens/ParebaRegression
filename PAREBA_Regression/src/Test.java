@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import objects.INGQTT;
+import objects.BICCODE;
 import objects.Pareba;
 
 import org.w3c.dom.Node;
@@ -39,14 +39,7 @@ public class Test {
 								pareba.getAccount().pseudo(
 										pareba.getAccount().accountNumbers(
 												pareba.getElement(), lengte))) == 12) {
-							qttReader = new QttReader();
-							qttReader.ingQttReader(pareba
-									.getAccount()
-									.bicCode(
-											pareba.getAccount()
-													.accountNumbers(
-															pareba.getElement(),
-															lengte)));
+							
 							Node type = pareba
 									.getAccount()
 									.type(pareba
@@ -63,13 +56,21 @@ public class Test {
 
 								if (!type.getNodeName().contains("#text")) {
 									qttPareba.add(type.getTextContent());
-									System.out.println(type.getTextContent());
 								}
 								type = type.getNextSibling();
 							}
 
 							Collections.sort(qttPareba);
-
+							
+							qttReader = new QttReader();
+							qttReader.ingQttReader(pareba
+									.getAccount()
+									.bicCode(
+											pareba.getAccount()
+													.accountNumbers(
+															pareba.getElement(),
+															lengte)), qttPareba);
+							
 							String[] qttCountry = null;
 
 							switch (pareba

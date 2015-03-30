@@ -30,8 +30,6 @@ public class Pareba {
 			XmlFormatter xmlFormatter = new XmlFormatter();
 			xmlFormatter.format(xmlFormatter.readFile(xmlPareba.getPath(),
 					StandardCharsets.UTF_8));
-			System.out.println(xmlFormatter.format(xmlFormatter.readFile(
-					xmlPareba.getPath(), StandardCharsets.UTF_8)));
 
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
 					.newInstance();
