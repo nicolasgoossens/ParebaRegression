@@ -15,59 +15,71 @@ import objects.BICCODE;
 
 public class QttReader {
 
+	private InputStream inStream = null;
+	private BufferedReader reader = null;
+	private File file = null;
+	private String line;
+
 	public void ingQttReader(String bicCode, ArrayList<String> qttPareba)
 			throws IOException {
-		InputStream inStream = null;
-		BufferedReader reader = null;
-		File file = null;
-		String line;
+
+		if (BICCODE.bicCodes.containsValue(bicCode)) {
+			file = new File(".\\settings\\qttcodes_ing.txt");
+			qttValidation(bicCode, qttPareba, file);
+			System.out.println("ING!!!");
+
+		} else {
+			file = new File(".\\settings\\qttcodes_noning.txt");
+			qttValidation(bicCode, qttPareba, file);
+			System.out.println("NONING!!!");
+		}
+	}
+
+	private void qttValidation(String bicCode, ArrayList<String> qttPareba,
+			File file) throws IOException {
 
 		try {
-			if (BICCODE.bicCodes.containsValue(bicCode)) {
-				file = new File(".\\settings\\qttcodes_ing.txt");
-				inStream = new FileInputStream(file);
-				reader = new BufferedReader(new InputStreamReader(inStream));
+			inStream = new FileInputStream(file);
+			reader = new BufferedReader(new InputStreamReader(inStream));
+			line = reader.readLine();
+			while (!line.startsWith(bicCode.substring(4, 6))) {
 				line = reader.readLine();
-				while (!line.startsWith(bicCode.substring(4, 6))) {
-					line = reader.readLine();
+			}
+
+			String qtts[] = line.substring(3).split(",");
+			List<String> qttList = new ArrayList<String>(Arrays.asList(qtts));
+			System.out.println(qttList.toString());
+			System.out.println(qttList.size());
+			Collections.sort(qttList);
+			
+			if (qttList.equals(qttPareba)) {
+				System.out.println("Gelukt!!!!!");
+			} else if (qttList.size() == 1) {
+				System.out.println("Missing QTT LIST");
+		//CODE BELOW NOT WORKING!
+			} else if (qttPareba.size() < qttList.size()){
+				for(int i = 1; i == qttList.size(); i ++) {
+					if (qttPareba.contains(qttList.get(i))) {
+						System.out.println("Check!!");
+					} else {
+						System.out.println("Missing: " + qttList.get(i).toString() + " in PAREBA");
+					}
 				}
-
-				String qtts[] = line.substring(3).split(",");
-				List<String> qttList = new ArrayList<String>(
-						Arrays.asList(qtts));
-
-				Collections.sort(qttList);
-				if (qttList.equals(qttPareba)) {
-					System.out.println("Gelukt!!!!!");
-
-				}
-			} else {
-				file = new File(".\\settings\\qttcodes_noning.txt");
-				inStream = new FileInputStream(file);
-				reader = new BufferedReader(new InputStreamReader(inStream));
-				line = reader.readLine();
-				while (!line.startsWith(bicCode.substring(4, 6))) {
-					line = reader.readLine();
-				}
-				if (line != null) {
-					String qtts[] = line.substring(3).split(",");
-					List<String> qttList = new ArrayList<String>(
-							Arrays.asList(qtts));
-
-					Collections.sort(qttList);
-					if (qttList.equals(qttPareba)) {
-						System.out.println("ING!!!!!");
+			} else if (qttList.size() < qttPareba.size()) {
+				for(int i = 1; i == qttPareba.size(); i ++) {
+					if (qttList.contains(qttPareba.get(i))) {
+						System.out.println("Check!!");
+					} else {
+						System.out.println("QTT: " + qttPareba.get(i).toString() + " too much in PAREBA");
 					}
 				}
 			}
-		}
-
-		catch (IOException ie) {
+			
+		} catch (IOException ie) {
 			ie.printStackTrace();
 		} finally {
 			inStream.close();
 			reader.close();
 		}
-
 	}
 }

@@ -74,9 +74,9 @@ public class Test {
 															pareba.getElement(),
 															lengte)), qttPareba);
 							
-							String[] qttCountry = null;
+						//	String[] qttCountry = null;
 
-							switch (pareba
+						/*	switch (pareba
 									.getAccount()
 									.bicCode(
 											pareba.getAccount()
@@ -1145,14 +1145,14 @@ public class Test {
 										.println("Geen QTT's om mee te vergelijken! ");
 
 								break;
-							}
+							}*/
 
-							if (qttCountry != null) {
+							/*if (qttCountry != null) {
 								Arrays.sort(qttCountry);
 								qttValidation(qttPareba, qttCountry);
 								lg.writeLog(pareba, lengte,
 										qttValidation(qttPareba, qttCountry));
-							}
+							}*/
 						}
 
 						lengte++;
