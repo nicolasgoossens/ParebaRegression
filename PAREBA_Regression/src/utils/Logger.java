@@ -12,20 +12,30 @@ import objects.Pareba;
 
 public class Logger {
 
-	public Logger() {
+	public Logger() {		
+		
 	}
-
+	
+	private String date = new SimpleDateFormat("yyyyMMdd")
+	.format(Calendar.getInstance().getTime());
+	
+	private File logFolder = new File(".\\logging\\" + date);
+	
 	private File logFile;
 
 	public void createLogging() throws IOException {
 		FileWriter fw = null;
 		PrintWriter pw = null;
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+		String timeStamp = new SimpleDateFormat("HHmmss")
 				.format(Calendar.getInstance().getTime());
-
+		
 		try {
-
-			logFile = new File(".\\Logging\\logfile_" + timeStamp + ".txt");
+			
+			if(!logFolder.exists())
+			{
+				new File(".\\logging\\" + date).mkdir();
+			}
+			logFile = new File(".\\Logging\\" + date + "\\logfile_" + timeStamp + ".txt");
 			fw = new FileWriter(logFile);
 			pw = new PrintWriter(fw);
 
@@ -57,8 +67,17 @@ public class Logger {
 	public void writeSubscriptionAndTimestamp(Pareba pareba) {
 		try (PrintWriter out = new PrintWriter(new BufferedWriter(
 				new FileWriter(logFile, true)))) {
-			out.println("\nSubscription: "
-					+ pareba.getSubscriptionNumber(pareba.getElement()));
+			out.println("\n\t\t\t\t\t\t\t----------> Subscription: "
+					+ pareba.getSubscriptionNumber(pareba.getElement())+ " <----------");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void writeResult(String result) {
+		try (PrintWriter out = new PrintWriter(new BufferedWriter(
+				new FileWriter(logFile, true)))) {
+			out.println(result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

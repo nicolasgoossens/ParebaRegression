@@ -20,23 +20,27 @@ public class QttReader {
 	private File file = null;
 	private String line;
 
-	public void ingQttReader(String bicCode, ArrayList<String> qttPareba)
-			throws IOException {
+	public void ingQttReader(Logger lg, String account, String bicCode,
+			ArrayList<String> qttPareba) throws IOException {
 
 		if (BICCODE.bicCodes.containsValue(bicCode)) {
-			file = new File(".\\settings\\qttcodes_ing.txt");
-			qttValidation(bicCode, qttPareba, file);
-			System.out.println("ING!!!");
-
+			if (Integer.parseInt(account.substring(3, 4)) == 5
+					|| Integer.parseInt(account.substring(3, 4)) == 6) {
+				System.out.println("TEST!");
+				file = new File(".\\settings\\GroenBoekje.txt");
+				qttValidation(lg, bicCode, qttPareba, file);
+			} else {
+				file = new File(".\\settings\\qttcodes_ing.txt");
+				qttValidation(lg, bicCode, qttPareba, file);
+			}
 		} else {
 			file = new File(".\\settings\\qttcodes_noning.txt");
-			qttValidation(bicCode, qttPareba, file);
-			System.out.println("NONING!!!");
+			qttValidation(lg, bicCode, qttPareba, file);
 		}
 	}
 
-	private void qttValidation(String bicCode, ArrayList<String> qttPareba,
-			File file) throws IOException {
+	private void qttValidation(Logger lg, String bicCode,
+			ArrayList<String> qttPareba, File file) throws IOException {
 
 		try {
 			inStream = new FileInputStream(file);
@@ -48,33 +52,35 @@ public class QttReader {
 
 			String qtts[] = line.substring(3).split(",");
 			List<String> qttList = new ArrayList<String>(Arrays.asList(qtts));
-			System.out.println(qttList.toString());
-			System.out.println(qttList.size());
 			Collections.sort(qttList);
-			
+
 			if (qttList.equals(qttPareba)) {
-				System.out.println("Gelukt!!!!!");
+				lg.writeResult("\tAll QTT's are Correct for this Account!!");
+				System.out.println("All QTT's are Correct for this Account!!");
 			} else if (qttList.size() == 1) {
-				System.out.println("Missing QTT LIST");
-		//CODE BELOW NOT WORKING!
-			} else if (qttPareba.size() < qttList.size()){
-				for(int i = 1; i == qttList.size(); i ++) {
-					if (qttPareba.contains(qttList.get(i))) {
-						System.out.println("Check!!");
-					} else {
-						System.out.println("Missing: " + qttList.get(i).toString() + " in PAREBA");
+				lg.writeResult("\tMissing QTT LIST for this country!!");
+				System.out.println("QTT LIST missing for this country!!");
+			} else if (qttPareba.size() < qttList.size()) {
+				for (int i = 1; i < qttList.size(); i++) {
+					if (!qttPareba.contains(qttList.get(i))) {
+						lg.writeResult("\tMissing: " + qttList.get(i).toString()
+								+ " in PAREBA");
+						System.out.println("Missing: "
+								+ qttList.get(i).toString() + " in PAREBA");
 					}
 				}
 			} else if (qttList.size() < qttPareba.size()) {
-				for(int i = 1; i == qttPareba.size(); i ++) {
-					if (qttList.contains(qttPareba.get(i))) {
-						System.out.println("Check!!");
-					} else {
-						System.out.println("QTT: " + qttPareba.get(i).toString() + " too much in PAREBA");
+				for (int i = 1; i < qttPareba.size(); i++) {
+					if (!qttList.contains(qttPareba.get(i))) {
+						lg.writeResult("\tQTT: " + qttPareba.get(i).toString()
+								+ " too much in PAREBA");
+						System.out.println("\tQTT: "
+								+ qttPareba.get(i).toString()
+								+ " too much in PAREBA");
 					}
 				}
 			}
-			
+
 		} catch (IOException ie) {
 			ie.printStackTrace();
 		} finally {
